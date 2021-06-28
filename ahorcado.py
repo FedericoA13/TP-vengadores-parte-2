@@ -1,6 +1,5 @@
 import constantes as const
 
-
 def ofuscar_palabra(palabra, letras_adivinadas):
     """
     Autor: Joaquin Mendaña.
@@ -115,8 +114,8 @@ def mostrar_mensaje_final(palabra, letras_adivinadas, letra):
         mensaje = f"Perdiste :(, la palabra era: {palabra}"
     
     print(mensaje)
-
-
+    
+    
 def jugar_ahorcado(palabra):
     """
     Autor: Alejandro Schamun.
@@ -154,3 +153,4 @@ def jugar_ahorcado(palabra):
     mostrar_mensaje_final(palabra, letras_adivinadas, letra)
 
     return puntaje
+

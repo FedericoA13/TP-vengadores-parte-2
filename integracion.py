@@ -1,9 +1,10 @@
 import diccionario
 import ahorcado
 import constantes as const
+import random
+ 
 
-
-def seleccion_palabra(desea_letras):
+def seleccion_palabra(desea_letras,cant_letras): #Cambie esta valiable para que acepte si desea letras o no y cuantas
     """
     Autor: Federico Aldrighetti.
 
@@ -14,8 +15,7 @@ def seleccion_palabra(desea_letras):
 
     dicc = diccionario.devolver_diccionario()
 
-    if desea_letras.lower() == 'si':
-        cant_letras = input('Cuantas letras? ')
+    if desea_letras.lower() == 'si' or desea_letras.lower() == "no" :
         while not cant_letras.isnumeric() or diccionario.elegir_palabra(dicc, int(cant_letras)) == None:
             if not cant_letras.isnumeric():
                 cant_letras = input('Ingrese cantidad de letras correcta: ')
@@ -24,14 +24,32 @@ def seleccion_palabra(desea_letras):
                     f'No hay palabras con esa longitud. Elige una longitud entre {const.LONGITUD_MINIMA_PALABRA} y {const.LONGITUD_MAXIMA_PALABRA}: ')
 
         palabra_adivinar = diccionario.elegir_palabra(dicc, int(cant_letras))
-
-    elif desea_letras.lower() == 'no':
-        palabra_adivinar = diccionario.elegir_palabra(dicc)
-
+        
     else:
         palabra_adivinar = seleccion_palabra(input(const.INTRODUZCA_COMANDO_DE_NUEVO))
 
     return palabra_adivinar
+
+def multijugador():
+    """
+    Crea una lista con los nombres de los jugadores
+    (Use el mio porque lo conocia y no queria hacer cagadas con el de di.
+    Este esta de prueba pero al final hay que usar el de didy porque es mejor)
+    """
+    lista_de_jugadores = []
+    jugador = input("Nuevo Jugador (Max 5 jugadores)(Presionar enter para dejar de ingresar nombres): ")
+    while len (lista_de_jugadores) < 5 and jugador != "":
+        if jugador not in lista_de_jugadores:
+            lista_de_jugadores.append(jugador)
+            jugador = input("Nuevo Jugador (Max 5 jugadores)(Presionar enter para dejar de ingresar nombres): ")
+        else:
+            print ("El nombre ya fue ingresado")
+            jugador = input("Nuevo Jugador (Max 5 jugadores)(Preseionar enter para dejar de ingresar nombres): ")
+    if len (lista_de_jugadores) == 5:
+        print ("Se alcanzo el numero maximo de jugadores,",jugador,"no pudo ser ingresado")
+             
+        
+    return lista_de_jugadores
 
 
 def jugar_una_partida():
@@ -40,8 +58,22 @@ def jugar_una_partida():
 
     La función inicializa la partida
     """
-    palabra_a_adivinar = seleccion_palabra(input(const.DESEA_LETRAS))
-    return ahorcado.jugar_ahorcado(palabra_a_adivinar)
+    jugadores = multijugador() #Crea la lista con los nombres
+    saber_si_quiere_letras = input(const.DESEA_LETRAS) #Pregunta si quiere letras
+    if saber_si_quiere_letras == "si":
+        cant_letras = input('Cuantas letras? ')
+    elif saber_si_quiere_letras == "no":
+        lista = list(range(5,16)) #En el caso de "no" se crea una lista con las longuitudes que tenemos
+        cant_letras = str(random.choice(lista)) #Se elige un numero al azar de esa lista que sera la cantidad de letras
+    else:
+        cant_letras = 0 #Ignorar
+    palabras_asignadas = {} #Diccionario con nombres de los jugadores y su palabra asignada
+    for jugador in jugadores:
+        palabra_a_adivinar = seleccion_palabra(saber_si_quiere_letras,cant_letras)#Por cada jugador elige una palabra
+        palabras_asignadas[jugador] = palabra_a_adivinar #Las sube al diccionario
+    print (palabras_asignadas)#Para ver la lista
+        
+    return ahorcado.jugar_ahorcado(palabra_a_adivinar) 
 
 
 def jugar_multiples_partidas():
