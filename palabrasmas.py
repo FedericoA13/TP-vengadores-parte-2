@@ -1,16 +1,19 @@
+import random
+import constantes as const
+
 archivo_cuentos = open('Cuentos.txt', 'r')
 archivo_noches = open('Las 1000 Noches y 1 Noche.txt', 'r')
 archivo_arania = open('La araña negra - tomo 1.txt', 'r')
-archivo_palabras = open('palabras.csv', 'w')
+archivo_palabras = open('palabras.csv', 'a')
 
 lista_archivos = [archivo_cuentos, archivo_noches, archivo_arania]
 
 
-def leer_info(archivo):
+def leer_info(archivo, separacion=' '):
 
     linea = archivo.readline()
     if linea:
-        registro = linea.rstrip('\n').replace('--', ' ').split()
+        registro = linea.rstrip('\n').replace('--', ' ').split(separacion)
     else:
         registro = False
     return registro
@@ -80,20 +83,19 @@ def ordenamiento_listas(tupla_de_listas):
 
 def creacion_texto(lista_de_listas):
 
+    longitud_lista = 0
+
     indice_cuentos, indice_noches, indice_arania = (0, 0, 0)
 
     palabra_cuentos = lista_de_listas[0][indice_cuentos]
     palabra_noches = lista_de_listas[1][indice_noches]
     palabra_arania = lista_de_listas[2][indice_arania]
 
-
-
     while indice_cuentos < (len(lista_de_listas[0])-1) and indice_noches < (len(lista_de_listas[1])-1) and indice_arania < (len(lista_de_listas[2])-1):
 
         palabra = min(palabra_cuentos, palabra_noches, palabra_arania)
 
         contador_cuentos, contador_noches, contador_arania = (0, 0, 0)
-
 
         while palabra_cuentos == palabra:
             contador_cuentos += 1
@@ -116,6 +118,7 @@ def creacion_texto(lista_de_listas):
         #print('ESCRIBE', palabra)
         archivo_palabras.write(
             f'{palabra},{contador_cuentos},{contador_noches},{contador_arania} \n')
+        longitud_lista += 1
 
     archivo_cuentos.close()
     archivo_noches.close()
@@ -123,4 +126,30 @@ def creacion_texto(lista_de_listas):
     archivo_palabras.close()
 
 
-creacion_texto((procesar_listas(creacion_de_listas(lista_archivos))))
+# creacion_texto(procesar_listas(creacion_de_listas(lista_archivos)))
+
+
+def elegir_palabra(archivo, cant_letras=0):
+
+    palabra = ''
+    while len(palabra) != cant_letras:
+        palabra = devolver_palabra_aleatoria(archivo)
+
+    if cant_letras == 0:
+        palabra = devolver_palabra_aleatoria(archivo)
+
+    return palabra
+
+
+def devolver_palabra_aleatoria(archivo):  # TODO: TO DO
+
+    posicion = random.randrange(const.LONGITUD_CSV)
+    archivo.seek(posicion)
+    linea = leer_info(archivo, ',')
+    while not linea:
+        posicion = random.randrange(const.LONGITUD_CSV)
+        archivo.seek(posicion)
+        linea = leer_info(archivo, ',')
+
+    print(linea)
+    return linea[0]
