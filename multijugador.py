@@ -23,8 +23,6 @@ def solicitar_nombre(nombres_jugadores):
 
     return nombre_jugador.lower()
 
-print(solicitar_nombre(["carlos", "olivia", "fede", "jose", "victor"]))
-
 def solicitar_nombres_jugadores():
     """
     Solicita el ingreso de los nombres de los jugadores. Valida que no sean mas de 5 y que no se repitan.
@@ -44,7 +42,7 @@ def solicitar_nombres_jugadores():
     return nombres_jugadores
 
 
-print(solicitar_nombres_jugadores())
+#print(solicitar_nombres_jugadores())
 
 
 def asignar_turno_jugadores(nombres_jugadores, ganador):
@@ -60,21 +58,24 @@ def asignar_turno_jugadores(nombres_jugadores, ganador):
 
     return nombres_jugadores
 
-print(asignar_turno_jugadores(["carlos", "olivia", "fede", "jose", "victor"], "fede"))
+#print(asignar_turno_jugadores(["carlos", "olivia", "fede", "jose", "victor"], "fede"))
 
 
 def informar_turnos_jugadores(nombres_jugadores):
     """
     Muestra cual es el turno de cada jugador
     """
-    print("Jugador1...")
+    for i in range(len(nombres_jugadores)):
+        #print(f"El jugador {nombres_jugadores[i]} tiene el turno {i + 1}")
+        print(f"Turno {i + 1}: {nombres_jugadores[i]}")
 
+informar_turnos_jugadores(["didy", "lucrecia", "romina"])
 
 def asignar_palabras_jugadores():
     """
     Asigna una palabra aleatoria a cada jugador. Todas las palabras contendrán la misma longitud.
     """
-    # palabra = seleccion_palabra(input(const.DESEA_LETRAS))
+    palabra = seleccion_palabra(input(const.DESEA_LETRAS))
     return {"jugador1": ["palabra", [], []], "jugador2": ["sandia", [], []]}
 
 
