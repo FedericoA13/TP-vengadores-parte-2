@@ -69,7 +69,7 @@ def informar_turnos_jugadores(nombres_jugadores):
         #print(f"El jugador {nombres_jugadores[i]} tiene el turno {i + 1}")
         print(f"Turno {i + 1}: {nombres_jugadores[i]}")
 
-informar_turnos_jugadores(["didy", "lucrecia", "romina"])
+informar_turnos_jugadores(["didy", "facu", "ale"])
 
 def asignar_palabras_jugadores():
     """
