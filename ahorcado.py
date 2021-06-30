@@ -1,5 +1,8 @@
 import constantes as const
-import random 
+import random
+
+from multijugador import asignar_palabras_jugadores
+
 
 def ofuscar_palabra(palabra, letras_adivinadas):
     """
@@ -220,4 +223,26 @@ def jugar_ahorcado(palabra):
     mostrar_mensaje_final(palabra, letras_adivinadas, letra)
 
     return puntaje
+
+#TODO: funcion harcodeada, hay que completarla
+def jugar_ahorcado_multijugador():
+    nombres_jugadores = solicitar_nombres_jugadores()
+    nombre_ultimo_ganador = ""
+
+    nombres_jugadores = asignar_turno_jugadores(nombres_jugadores, nombre_ultimo_ganador)
+    informar_turnos_jugadores(nombres_jugadores)
+
+    palabras_jugadores = asignar_palabras_jugadores() #Ejemplo: ["palabra1", "palabra2"]
+    puntajes_jugadores = [] #Ejemplo: [6, 2]
+    letras_adivinadas = [] #Ejemplo: [["p", "a", "l"], ["p", "a"]]
+    letras_erroneas = []
+
+    existe_ganador = False
+
+    while not existe_ganador:
+        i = 0
+        while i < len(nombres_jugadores):
+            letras_adivinadas[i], letras_erroneas[i], puntajes_jugadores[i] = ahorcado.jugar_ahorcado(
+                palabras_jugadores[i], letras_adivinadas[i], letras_erroneas[i], puntajes_jugadores[i])
+            i += 1
 
