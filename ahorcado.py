@@ -1,9 +1,6 @@
 import constantes as const
 import random
 
-from multijugador import asignar_palabras_jugadores
-
-
 def ofuscar_palabra(palabra, letras_adivinadas):
     """
     Autor: Joaquin Mendaña.
