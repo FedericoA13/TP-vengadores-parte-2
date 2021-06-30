@@ -242,7 +242,7 @@ def jugar_ahorcado_multijugador():
     while not existe_ganador:
         i = 0
         while i < len(nombres_jugadores):
-            letras_adivinadas[i], letras_erroneas[i], puntajes_jugadores[i] = ahorcado.jugar_ahorcado(
+            letras_adivinadas[i], letras_erroneas[i], puntajes_jugadores[i] = jugar_ahorcado(
                 palabras_jugadores[i], letras_adivinadas[i], letras_erroneas[i], puntajes_jugadores[i])
             i += 1
 
