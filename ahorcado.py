@@ -234,3 +234,20 @@ def jugar_ahorcado(dicc_estadisticas_jugador):
         mostrar_mensaje_final(palabra, letras_adivinadas, letra)
 
     return [palabra, puntaje, letras_adivinadas, letras_erroneas, juego_ganado(palabra, letras_adivinadas)]
+
+"""
+def multijugador():
+    lista_de_jugadores = [] 
+    jugador = input("Nuevo Jugador (Max 5 jugadores)(Presionar enter para dejar de ingresar nombres): ")
+    while len (lista_de_jugadores) < 5 and jugador != "":
+        if jugador.lower() not in lista_de_jugadores:
+            lista_de_jugadores.append(jugador)
+            if len (lista_de_jugadores) < 5:
+                jugador = input("Nuevo Jugador (Max 5 jugadores)(Presionar enter para dejar de ingresar nombres): ")
+        else:
+            print ("El nombre ya fue ingresado")
+            jugador = input("Nuevo Jugador (Max 5 jugadores)(Preseionar enter para dejar de ingresar nombres): ")
+             
+        
+    return lista_de_jugadores
+"""

@@ -25,9 +25,6 @@ def seleccion_palabra(desea_letras, cant_letras):
 
         palabra_adivinar = diccionario.elegir_palabra(dicc, int(cant_letras))
 
-    else:
-        palabra_adivinar = seleccion_palabra(input(const.INTRODUZCA_COMANDO_DE_NUEVO))
-
     return palabra_adivinar
 
 
@@ -37,8 +34,12 @@ def asignar_palabras_jugadores(nombres_jugadores):
 
     Asigna una palabra a cada uno de los jugadores.
     La longitud de todas las palabras será la misma y corresponderá al valor ingresado por el primer jugador.
+
     """
-    saber_si_quiere_letras = input(const.DESEA_LETRAS)  # Pregunta si quiere letras
+    saber_si_quiere_letras = "" # Pregunta si quiere letras
+    
+    while saber_si_quiere_letras.lower() != "si" and saber_si_quiere_letras.lower() != "no":
+        saber_si_quiere_letras = input(const.DESEA_LETRAS)    
     
     if saber_si_quiere_letras == "si":
         cant_letras = input('Cuantas letras? ')
@@ -49,9 +50,6 @@ def asignar_palabras_jugadores(nombres_jugadores):
         # Se elige un numero al azar de esa lista que sera la cantidad de letras
         cant_letras = str(random.choice(lista))
     
-    else:
-        cant_letras = 0  # Ignorar
-    
     palabras_asignadas = {}  # Diccionario con nombres de los jugadores y su palabra asignada
     
     for jugador in nombres_jugadores:
@@ -59,6 +57,8 @@ def asignar_palabras_jugadores(nombres_jugadores):
         palabra_a_adivinar = seleccion_palabra(saber_si_quiere_letras, cant_letras)
         # Las sube al diccionario
         palabras_asignadas[jugador] = palabra_a_adivinar
+        
+    print(palabras_asignadas)
 
     return palabras_asignadas  # Para ver la lista
 
