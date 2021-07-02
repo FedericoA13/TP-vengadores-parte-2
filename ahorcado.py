@@ -180,10 +180,22 @@ def informar_turnos_jugadores(nombres_jugadores):
     Muestra cual es el turno de cada jugador
     """
     for i in range(len(nombres_jugadores)):
-        print(f"Turno {i + 1}: {nombres_jugadores[i]}")
+        print(f"\nTurno {i + 1}: {nombres_jugadores[i]}")
         
 
-def jugar_ahorcado(palabra):
+def inicializar_variables(dicc_estadisticas_jugador):
+    """
+    TODO: Completar
+    """
+    palabra = dicc_estadisticas_jugador[0]
+    puntaje = dicc_estadisticas_jugador[1]
+    letras_adivinadas = dicc_estadisticas_jugador[2]
+    letras_erroneas = dicc_estadisticas_jugador[3]
+
+    return palabra, puntaje, letras_adivinadas, letras_erroneas
+
+
+def jugar_ahorcado(dicc_estadisticas_jugador):
     """
     Autor: Alejandro Schamun.
 
@@ -193,14 +205,14 @@ def jugar_ahorcado(palabra):
     Devuelve el puntaje obtenido al terminar de jugar.
     """
 
-    letras_adivinadas = []
-    letras_erroneas = []
-    puntaje = 0
+    palabra, puntaje, letras_adivinadas, letras_erroneas = inicializar_variables(dicc_estadisticas_jugador)
 
     mostrar_informacion(const.MENSAJE_INICIAL, palabra, letras_adivinadas, letras_erroneas)
     letra = pedir_letra(letras_adivinadas + letras_erroneas)
 
-    while not finalizar_juego(letra) and tiene_intentos(letras_erroneas) and not juego_ganado(palabra, letras_adivinadas):
+    tuvo_errores = False
+
+    while not finalizar_juego(letra) and tiene_intentos(letras_erroneas) and not juego_ganado(palabra, letras_adivinadas) and not tuvo_errores:
 
         if letra in palabra:
             letras_adivinadas.append(letra)
@@ -211,35 +223,14 @@ def jugar_ahorcado(palabra):
             letras_erroneas.append(letra)
             mensaje = const.MENSAJE_DESACIERTO
             puntaje += const.PUNTAJE_DESACIERTO
+            tuvo_errores = True
 
         mostrar_informacion(mensaje, palabra, letras_adivinadas, letras_erroneas)
 
-        if tiene_intentos(letras_erroneas) and not juego_ganado(palabra, letras_adivinadas):
+        if tiene_intentos(letras_erroneas) and not juego_ganado(palabra, letras_adivinadas) and not tuvo_errores:
             letra = pedir_letra(letras_adivinadas + letras_erroneas)
     
-    mostrar_mensaje_final(palabra, letras_adivinadas, letra)
+    if not tiene_intentos(letras_erroneas):
+        mostrar_mensaje_final(palabra, letras_adivinadas, letra)
 
-    return puntaje
-
-#TODO: funcion harcodeada, hay que completarla
-def jugar_ahorcado_multijugador():
-    nombres_jugadores = solicitar_nombres_jugadores()
-    nombre_ultimo_ganador = ""
-
-    nombres_jugadores = asignar_turno_jugadores(nombres_jugadores, nombre_ultimo_ganador)
-    informar_turnos_jugadores(nombres_jugadores)
-
-    palabras_jugadores = asignar_palabras_jugadores() #Ejemplo: ["palabra1", "palabra2"]
-    puntajes_jugadores = [] #Ejemplo: [6, 2]
-    letras_adivinadas = [] #Ejemplo: [["p", "a", "l"], ["p", "a"]]
-    letras_erroneas = []
-
-    existe_ganador = False
-
-    while not existe_ganador:
-        i = 0
-        while i < len(nombres_jugadores):
-            letras_adivinadas[i], letras_erroneas[i], puntajes_jugadores[i] = jugar_ahorcado(
-                palabras_jugadores[i], letras_adivinadas[i], letras_erroneas[i], puntajes_jugadores[i])
-            i += 1
-
+    return [palabra, puntaje, letras_adivinadas, letras_erroneas, juego_ganado(palabra, letras_adivinadas)]
