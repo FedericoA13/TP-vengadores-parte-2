@@ -129,7 +129,7 @@ def creacion_texto(lista_de_listas):
 # creacion_texto(procesar_listas(creacion_de_listas(lista_archivos)))
 
 
-def elegir_palabra(archivo, cant_letras=0):
+'''def elegir_palabra(archivo, cant_letras=0):
 
     palabra = ''
     while len(palabra) != cant_letras:
@@ -152,4 +152,4 @@ def devolver_palabra_aleatoria(archivo):  # TODO: TO DO
         linea = leer_info(archivo, ',')
 
     print(linea)
-    return linea[0]
+    return linea[0]'''

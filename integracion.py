@@ -1,5 +1,5 @@
 import diccionario
-import palabrasmas
+import palabrasmenos
 import ahorcado
 import constantes as const
 
@@ -41,18 +41,18 @@ def seleccion_palabra(desea_letras):
 
     if desea_letras.lower() == 'si':
         cant_letras = input('Cuantas letras? ')
-        while not cant_letras.isnumeric() or int(cant_letras) > 16:
+        while not cant_letras.isnumeric() or palabrasmenos.elegir_palabra(archivo_palabras, int(cant_letras)):
             if not cant_letras.isnumeric():
                 cant_letras = input('Ingrese cantidad de letras correcta: ')
-            elif int(cant_letras) > 16:
+            elif palabrasmenos.elegir_palabra(archivo_palabras, int(cant_letras)):
                 cant_letras = input(
                     f'No hay palabras con esa longitud. Elige una longitud entre {const.LONGITUD_MINIMA_PALABRA} y {const.LONGITUD_MAXIMA_PALABRA}: ')
 
-        palabra_adivinar = palabrasmas.elegir_palabra(
+        palabra_adivinar = palabrasmenos.elegir_palabra(
             archivo_palabras, int(cant_letras))
 
     elif desea_letras.lower() == 'no':
-        palabra_adivinar = palabrasmas.elegir_palabra(archivo_palabras)
+        palabra_adivinar = palabrasmenos.elegir_palabra(archivo_palabras)
 
     else:
         palabra_adivinar = seleccion_palabra(input(const.INTRODUZCA_COMANDO_DE_NUEVO))
