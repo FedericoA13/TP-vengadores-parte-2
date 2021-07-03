@@ -58,7 +58,7 @@ def asignar_palabras_jugadores(nombres_jugadores):
         # Las sube al diccionario
         palabras_asignadas[jugador] = palabra_a_adivinar
         
-    print(palabras_asignadas)
+    print(palabras_asignadas) #TODO: borrar
 
     return palabras_asignadas  # Para ver la lista
 
@@ -74,16 +74,19 @@ def actualizar_estadisticas_acumuladas(dicc_estadisticas_acumuladas, dicc_estadi
     """
 
     for jugador in dicc_estadisticas_partida:
-        palabra, puntaje, letras_adivinadas, letras_erroneas, gano = ahorcado.inicializar_variables(dicc_estadisticas_partida[jugador])
+        palabra, puntaje, letras_adivinadas, letras_erroneas, gano = ahorcado.inicializar_variables(
+            dicc_estadisticas_partida[jugador]) # for para recorrer los jugadores e inicializar las estadisticas de
+        # los jugadores
 
         resultado = 1 if gano else 0
 
         if jugador not in dicc_estadisticas_acumuladas:
-            puntaje_total = cant_aciertos = cant_desaciertos = cant_victorias = 0
+            puntaje_total = cant_aciertos = cant_desaciertos = cant_victorias = 0 #inicializa las estadisticas
+            # acumuladas en 0
 
             dicc_estadisticas_acumuladas[jugador] = [puntaje_total, cant_aciertos, cant_desaciertos, cant_victorias]
 
-        dicc_estadisticas_acumuladas[jugador] = [
+        dicc_estadisticas_acumuladas[jugador] = [ #actualiza las estadisticas acumuladas
             dicc_estadisticas_acumuladas[jugador][const.EST_ACUM_INDICE_PUNTAJE] + puntaje,
             dicc_estadisticas_acumuladas[jugador][const.EST_ACUM_INDICE_CANT_ACIERTOS] + len(letras_adivinadas),
             dicc_estadisticas_acumuladas[jugador][const.EST_ACUM_INDICE_CANT_DESACIERTOS] + len(letras_erroneas),
@@ -96,6 +99,9 @@ def actualizar_estadisticas_acumuladas(dicc_estadisticas_acumuladas, dicc_estadi
 
 
 def mostrar_resultados_acumulados(dicc_estadisticas_acumuladas, cant_partidas):
+    """
+    Muestra los resultados totales luego de cada partida.
+    """
     print(f"\n====================== Resultados Generales ======================")
     print(f"Cantidad de partidas jugadas: {cant_partidas}")
 
@@ -111,7 +117,7 @@ def mostrar_resultados_acumulados(dicc_estadisticas_acumuladas, cant_partidas):
 
 def jugar_una_partida(nombres_jugadores, nombre_ultimo_ganador):
     """
-    TODO: Añadir descripción
+    Juega una partida
 
     """
     nombres_jugadores = ahorcado.asignar_turno_jugadores(nombres_jugadores, nombre_ultimo_ganador)
@@ -120,7 +126,8 @@ def jugar_una_partida(nombres_jugadores, nombre_ultimo_ganador):
 
     dicc_estadisticas_partida = {}
     for jugador in dicc_palabras:
-        dicc_estadisticas_partida[jugador] = [dicc_palabras[jugador], 0, [], [], False]
+        dicc_estadisticas_partida[jugador] = [dicc_palabras[jugador], 0, [], [], False] # a cada jugador le asignamos
+        # su palabra e iniciliza las estadisticas
 
     existe_ganador = False
     todos_perdieron = False
@@ -128,19 +135,21 @@ def jugar_una_partida(nombres_jugadores, nombre_ultimo_ganador):
     nombre_ultimo_ganador = ""
     
     while not existe_ganador and not todos_perdieron:
-        i = 0
+        i = 0 #para jugar multiples veces
 
         while i < len(nombres_jugadores) and not existe_ganador and not todos_perdieron:
 
             jugador = nombres_jugadores[i]
             letras_erroneas = dicc_estadisticas_partida[jugador][const.EST_JUGADOR_INDICE_LETRAS_ERRONEAS]
 
-            if ahorcado.tiene_intentos(letras_erroneas):
+            if ahorcado.tiene_intentos(letras_erroneas): # si tiene intentos, llama a jugar ahorcado y actualiza las
+                # estadisticas del jugador
                 print(f"\n====================== Turno de {jugador} ======================")
                 dicc_estadisticas_partida[jugador] = ahorcado.jugar_ahorcado(dicc_estadisticas_partida[jugador])
 
                 gano = dicc_estadisticas_partida[jugador][const.EST_JUGADOR_INDICE_GANO]
-                if gano:
+                if gano: # si gano, setea su nombre y le al dic de estadisticas de la partida el puntaje del jugador
+                    # por palabra acertada
                     existe_ganador = True
                     nombre_ultimo_ganador = jugador
                     dicc_estadisticas_partida[jugador][const.EST_JUGADOR_INDICE_PUNTAJE] += const.PUNTAJE_ACIERTO_PALABRA
@@ -152,7 +161,8 @@ def jugar_una_partida(nombres_jugadores, nombre_ultimo_ganador):
 
             i += 1
         
-        if todos_perdieron:
+        if todos_perdieron: # si todos perdieron, se le resta en el diccionario de las estadisticas de la partida
+            # el puntaje (-5)
             for jugador in dicc_estadisticas_partida:
                 dicc_estadisticas_partida[jugador][const.EST_JUGADOR_INDICE_PUNTAJE] += const.PUNTAJE_PERDIDA_PARTIDA
 
@@ -161,13 +171,12 @@ def jugar_una_partida(nombres_jugadores, nombre_ultimo_ganador):
 
 def jugar_multiples_partidas():
     """
-    TODO: Añadir descripción
+    Funcion principal.
 
     """
     nombres_jugadores = ahorcado.solicitar_nombres_jugadores()
 
     cant_partidas = 0
-    dicc_estadisticas_partida = {}
     dicc_estadisticas_acumuladas = {}
 
     seguir_jugando = "si"
@@ -187,7 +196,8 @@ def jugar_multiples_partidas():
         mostrar_resultados_acumulados(dicc_estadisticas_acumuladas, cant_partidas)
 
         seguir_jugando = ""
-        while seguir_jugando not in ["si", "no"]:
+        while seguir_jugando not in ["si", "no"]: #mientras que la respuesta a seguir jugando no sea si o no,
+            # le va a seguir preguntando si desea seguir jugando
             seguir_jugando = input(f"\n{const.SEGUIR_JUGANDO}")
 
     print(const.MENSAJE_DESPEDIDA)

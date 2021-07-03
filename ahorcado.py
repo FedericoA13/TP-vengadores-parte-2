@@ -115,7 +115,7 @@ def mostrar_mensaje_final(palabra, letras_adivinadas, letra):
         mensaje = f"Perdiste :(, la palabra era: {palabra}"
     
     print(mensaje)
-    
+
 def solicitar_nombre(nombres_jugadores):
     """
     Solicita el ingreso de un nombre y valida que no se encuentre en la lista de nombres recibida por parámetro,
@@ -177,7 +177,7 @@ def asignar_turno_jugadores(nombres_jugadores, ganador):
 
 def informar_turnos_jugadores(nombres_jugadores):
     """
-    Muestra cual es el turno de cada jugador
+    Muestra cual es el turno de cada jugador.
     """
     print("\nTurnos de los jugadores:")
     print("")
@@ -185,20 +185,22 @@ def informar_turnos_jugadores(nombres_jugadores):
         print(f"Turno {i + 1}: {nombres_jugadores[i]}")
     print("")
 
-def inicializar_variables(dicc_estadisticas_jugador):
+def inicializar_variables(lista_estadisticas_jugador):
     """
-    TODO: Completar
+    La funcion recibe una lista y agarra cada uno de los elementos"
     """
-    palabra = dicc_estadisticas_jugador[const.EST_JUGADOR_INDICE_PALABRA]
-    puntaje = dicc_estadisticas_jugador[const.EST_JUGADOR_INDICE_PUNTAJE]
-    letras_adivinadas = dicc_estadisticas_jugador[const.EST_JUGADOR_INDICE_LETRAS_ADIVINADAS]
-    letras_erroneas = dicc_estadisticas_jugador[const.EST_JUGADOR_INDICE_LETRAS_ERRONEAS]
-    gano = dicc_estadisticas_jugador[const.EST_JUGADOR_INDICE_GANO]
+    # lista completa para no pasar las variables por separado. Esta asociada a un dicc_estadisticas_jugador donde la
+    # clave es el jugador
+    palabra = lista_estadisticas_jugador[const.EST_JUGADOR_INDICE_PALABRA]
+    puntaje = lista_estadisticas_jugador[const.EST_JUGADOR_INDICE_PUNTAJE]
+    letras_adivinadas = lista_estadisticas_jugador[const.EST_JUGADOR_INDICE_LETRAS_ADIVINADAS]
+    letras_erroneas = lista_estadisticas_jugador[const.EST_JUGADOR_INDICE_LETRAS_ERRONEAS]
+    gano = lista_estadisticas_jugador[const.EST_JUGADOR_INDICE_GANO]
 
     return palabra, puntaje, letras_adivinadas, letras_erroneas, gano
 
 
-def jugar_ahorcado(dicc_estadisticas_jugador):
+def jugar_ahorcado(lista_estadisticas_jugador):
     """
     Autor: Alejandro Schamun.
 
@@ -208,7 +210,8 @@ def jugar_ahorcado(dicc_estadisticas_jugador):
     Devuelve el puntaje obtenido al terminar de jugar.
     """
 
-    palabra, puntaje, letras_adivinadas, letras_erroneas, gano = inicializar_variables(dicc_estadisticas_jugador)
+    palabra, puntaje, letras_adivinadas, letras_erroneas, gano = inicializar_variables(lista_estadisticas_jugador)
+    #convertimos la lista en variables para usarlas directamente
 
     mostrar_informacion(const.MENSAJE_INICIAL, palabra, letras_adivinadas, letras_erroneas)
     letra = pedir_letra(letras_adivinadas + letras_erroneas)
@@ -226,7 +229,7 @@ def jugar_ahorcado(dicc_estadisticas_jugador):
             letras_erroneas.append(letra)
             mensaje = const.MENSAJE_DESACIERTO
             puntaje += const.PUNTAJE_DESACIERTO_LETRA
-            tuvo_errores = True
+            tuvo_errores = True #tuve errores, entonces para el turno al prox jugador
 
         mostrar_informacion(mensaje, palabra, letras_adivinadas, letras_erroneas)
 
