@@ -179,20 +179,23 @@ def informar_turnos_jugadores(nombres_jugadores):
     """
     Muestra cual es el turno de cada jugador
     """
+    print("\nTurnos de los jugadores:")
+    print("")
     for i in range(len(nombres_jugadores)):
-        print(f"\nTurno {i + 1}: {nombres_jugadores[i]}")
-        
+        print(f"Turno {i + 1}: {nombres_jugadores[i]}")
+    print("")
 
 def inicializar_variables(dicc_estadisticas_jugador):
     """
     TODO: Completar
     """
-    palabra = dicc_estadisticas_jugador[0]
-    puntaje = dicc_estadisticas_jugador[1]
-    letras_adivinadas = dicc_estadisticas_jugador[2]
-    letras_erroneas = dicc_estadisticas_jugador[3]
+    palabra = dicc_estadisticas_jugador[const.EST_JUGADOR_INDICE_PALABRA]
+    puntaje = dicc_estadisticas_jugador[const.EST_JUGADOR_INDICE_PUNTAJE]
+    letras_adivinadas = dicc_estadisticas_jugador[const.EST_JUGADOR_INDICE_LETRAS_ADIVINADAS]
+    letras_erroneas = dicc_estadisticas_jugador[const.EST_JUGADOR_INDICE_LETRAS_ERRONEAS]
+    gano = dicc_estadisticas_jugador[const.EST_JUGADOR_INDICE_GANO]
 
-    return palabra, puntaje, letras_adivinadas, letras_erroneas
+    return palabra, puntaje, letras_adivinadas, letras_erroneas, gano
 
 
 def jugar_ahorcado(dicc_estadisticas_jugador):
@@ -205,35 +208,37 @@ def jugar_ahorcado(dicc_estadisticas_jugador):
     Devuelve el puntaje obtenido al terminar de jugar.
     """
 
-    palabra, puntaje, letras_adivinadas, letras_erroneas = inicializar_variables(dicc_estadisticas_jugador)
+    palabra, puntaje, letras_adivinadas, letras_erroneas, gano = inicializar_variables(dicc_estadisticas_jugador)
 
     mostrar_informacion(const.MENSAJE_INICIAL, palabra, letras_adivinadas, letras_erroneas)
     letra = pedir_letra(letras_adivinadas + letras_erroneas)
 
     tuvo_errores = False
 
-    while not finalizar_juego(letra) and tiene_intentos(letras_erroneas) and not juego_ganado(palabra, letras_adivinadas) and not tuvo_errores:
+    while not finalizar_juego(letra) and tiene_intentos(letras_erroneas) and not gano and not tuvo_errores:
 
         if letra in palabra:
             letras_adivinadas.append(letra)
             mensaje = const.MENSAJE_ACIERTO
-            puntaje += const.PUNTAJE_ACIERTO
+            puntaje += const.PUNTAJE_ACIERTO_LETRA
 
         else:
             letras_erroneas.append(letra)
             mensaje = const.MENSAJE_DESACIERTO
-            puntaje += const.PUNTAJE_DESACIERTO
+            puntaje += const.PUNTAJE_DESACIERTO_LETRA
             tuvo_errores = True
 
         mostrar_informacion(mensaje, palabra, letras_adivinadas, letras_erroneas)
 
-        if tiene_intentos(letras_erroneas) and not juego_ganado(palabra, letras_adivinadas) and not tuvo_errores:
+        gano = juego_ganado(palabra, letras_adivinadas)
+
+        if tiene_intentos(letras_erroneas) and not gano and not tuvo_errores:
             letra = pedir_letra(letras_adivinadas + letras_erroneas)
     
     if not tiene_intentos(letras_erroneas):
         mostrar_mensaje_final(palabra, letras_adivinadas, letra)
 
-    return [palabra, puntaje, letras_adivinadas, letras_erroneas, juego_ganado(palabra, letras_adivinadas)]
+    return [palabra, puntaje, letras_adivinadas, letras_erroneas, gano]
 
 """
 def multijugador():
