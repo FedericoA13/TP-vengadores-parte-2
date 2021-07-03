@@ -96,7 +96,7 @@ archivo_palabras.close()
     else:'''
 
 
-def generar_palabras_candidatas(archivo, cant_letras):
+def generar_palabras_candidatas(archivo):
 
     lista_palabras_candidatas = []
     renglon = leer_info(archivo, ',')
@@ -104,47 +104,24 @@ def generar_palabras_candidatas(archivo, cant_letras):
     while renglon:
         # print(renglon)
         palabra = renglon[0]
-        if len(palabra) == cant_letras:
+        if const.LONGITUD_MAXIMA_PALABRA >= len(palabra) >= const.LONGITUD_MINIMA_PALABRA:
             lista_palabras_candidatas.append(palabra)
         renglon = leer_info(archivo, ',')
 
     return lista_palabras_candidatas
 
 
-def elegir_palabra(archivo, cant_letras=0):
+'''def devolver_palabras_candidatas(lista_palabras=None):
 
-    lista_palabras = generar_palabras_candidatas(archivo, cant_letras)
-    print(lista_palabras)
+    if not lista_palabras:
+        lista_palabras = generar_palabras_candidatas(archivo, cant_letras)
+
+    return lista_palabras'''
+
+
+def elegir_palabra(lista_palabras, cant_letras=0):
+
     if cant_letras != 0:
         lista_palabras = list(filter(lambda palabra: len(palabra) == cant_letras, lista_palabras))
 
-    print(random.choice(lista_palabras) if len(lista_palabras) > 0 else None)
     return random.choice(lista_palabras) if len(lista_palabras) > 0 else None
-
-
-'''
-def elegir_palabra(archivo, cant_letras=0):
-
-    palabra = ''
-    while len(palabra) != cant_letras:
-        palabra = devolver_palabra_aleatoria(archivo)
-
-    if cant_letras == 0:
-        palabra = devolver_palabra_aleatoria(archivo)
-
-    return palabra
-
-
-
-def devolver_palabra_aleatoria(archivo):  # TODO: TO DO
-
-    posicion = random.randrange(const.LONGITUD_CSV)
-    archivo.seek(posicion)
-    linea = leer_info(archivo, ',')
-    while not linea:
-        posicion = random.randrange(const.LONGITUD_CSV)
-        archivo.seek(posicion)
-        linea = leer_info(archivo, ',')
-
-    print(linea)
-    return linea[0]'''

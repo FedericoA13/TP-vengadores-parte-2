@@ -38,28 +38,28 @@ import constantes as const
 def seleccion_palabra(desea_letras):
 
     archivo_palabras = open('palabras.csv', 'r')
+    lista_palabras = palabrasmenos.generar_palabras_candidatas(archivo_palabras)
 
     if desea_letras.lower() == 'si':
         cant_letras = input('Cuantas letras? ')
-        while not cant_letras.isnumeric() or palabrasmenos.elegir_palabra(archivo_palabras, int(cant_letras)):
+        palabra_adivinar = palabrasmenos.elegir_palabra(lista_palabras, int(cant_letras))
+
+        while not cant_letras.isnumeric() or palabra_adivinar == None:
             if not cant_letras.isnumeric():
                 cant_letras = input('Ingrese cantidad de letras correcta: ')
-            elif palabrasmenos.elegir_palabra(archivo_palabras, int(cant_letras)):
+            elif palabra_adivinar == None:
                 cant_letras = input(
                     f'No hay palabras con esa longitud. Elige una longitud entre {const.LONGITUD_MINIMA_PALABRA} y {const.LONGITUD_MAXIMA_PALABRA}: ')
-
-        palabra_adivinar = palabrasmenos.elegir_palabra(
-            archivo_palabras, int(cant_letras))
+            palabra_adivinar = palabrasmenos.elegir_palabra(lista_palabras, int(cant_letras))
 
     elif desea_letras.lower() == 'no':
-        palabra_adivinar = palabrasmenos.elegir_palabra(archivo_palabras)
+        palabra_adivinar = palabrasmenos.elegir_palabra(lista_palabras)
 
     else:
         palabra_adivinar = seleccion_palabra(input(const.INTRODUZCA_COMANDO_DE_NUEVO))
 
-    archivo_palabras.close()
-
     return palabra_adivinar
+    archivo_palabras.close()
 
 
 def jugar_una_partida():
