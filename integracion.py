@@ -2,10 +2,11 @@ import diccionario
 import ahorcado
 import constantes as const
 import random
+import operator 
 
 
 # Cambie esta valiable para que acepte si desea letras o no y cuantas
-def seleccion_palabra(desea_letras, cant_letras):
+def cantidad_de_letras():
     """
     Autor: Federico Aldrighetti.
 
@@ -15,6 +16,22 @@ def seleccion_palabra(desea_letras, cant_letras):
     """
 
     dicc = diccionario.devolver_diccionario()
+    #diccionario.devolver_diccionario()
+    #{"casas":0,"autos":0,"perro":0}
+    
+    desea_letras = "" # Pregunta si quiere letras
+    
+    while desea_letras.lower() != "si" and desea_letras.lower() != "no":
+        desea_letras = input(const.DESEA_LETRAS)    
+    
+    if desea_letras.lower() == "si":
+        cant_letras = input('Cuantas letras?: ')
+            
+    elif desea_letras.lower() == "no":
+        # En el caso de "no" se crea una lista con las longuitudes que tenemos
+        lista = list(range(5, 16))
+        # Se elige un numero al azar de esa lista que sera la cantidad de letras
+        cant_letras = str(random.choice(lista))
 
     if desea_letras.lower() == 'si' or desea_letras.lower() == "no":
         while not cant_letras.isnumeric() or diccionario.elegir_palabra(dicc, int(cant_letras)) == None:
@@ -23,7 +40,15 @@ def seleccion_palabra(desea_letras, cant_letras):
             elif diccionario.elegir_palabra(dicc, int(cant_letras)) == None:
                 cant_letras = input(f'No hay palabras con esa longitud. Elige una longitud entre {const.LONGITUD_MINIMA_PALABRA} y {const.LONGITUD_MAXIMA_PALABRA}: ')
 
-        palabra_adivinar = diccionario.elegir_palabra(dicc, int(cant_letras))
+    return cant_letras
+
+def seleccion_palabra(longuitud_de_palabras):
+    
+    dicc = diccionario.devolver_diccionario()
+    #diccionario.devolver_diccionario()
+    #{"casas":0,"autos":0,"perro":0}
+    
+    palabra_adivinar = diccionario.elegir_palabra(dicc, int(longuitud_de_palabras))
 
     return palabra_adivinar
 
@@ -36,25 +61,13 @@ def asignar_palabras_jugadores(nombres_jugadores):
     La longitud de todas las palabras será la misma y corresponderá al valor ingresado por el primer jugador.
 
     """
-    saber_si_quiere_letras = "" # Pregunta si quiere letras
-    
-    while saber_si_quiere_letras.lower() != "si" and saber_si_quiere_letras.lower() != "no":
-        saber_si_quiere_letras = input(const.DESEA_LETRAS)    
-    
-    if saber_si_quiere_letras.lower() == "si":
-        cant_letras = input('Cuantas letras? ')
-    
-    elif saber_si_quiere_letras.lower() == "no":
-        # En el caso de "no" se crea una lista con las longuitudes que tenemos
-        lista = list(range(5, 16))
-        # Se elige un numero al azar de esa lista que sera la cantidad de letras
-        cant_letras = str(random.choice(lista))
+    longuitud_de_palabras = cantidad_de_letras()
     
     palabras_asignadas = {}  # Diccionario con nombres de los jugadores y su palabra asignada
     
     for jugador in nombres_jugadores:
         # Por cada jugador elige una palabra
-        palabra_a_adivinar = seleccion_palabra(saber_si_quiere_letras, cant_letras)
+        palabra_a_adivinar = seleccion_palabra(longuitud_de_palabras)
         # Las sube al diccionario
         palabras_asignadas[jugador] = palabra_a_adivinar
         
@@ -95,9 +108,10 @@ def actualizar_estadisticas_acumuladas(dicc_estadisticas_acumuladas, dicc_estadi
             dicc_estadisticas_acumuladas[jugador][const.EST_ACUM_INDICE_CANT_VICTORIAS] + resultado,
         ]
     
-    # TODO: Ordenar diccionario por puntaje total
+    tupla_estadisticas_acumuladas_ordenado = sorted(dicc_estadisticas_acumuladas.items(), key=operator.itemgetter(1), reverse=True)
+    dicc_estadisticas_acumuladas_ordenado = dict((c, v) for c, v in tupla_estadisticas_acumuladas_ordenado)
 
-    return dicc_estadisticas_acumuladas
+    return dicc_estadisticas_acumuladas_ordenado
 
 
 def mostrar_resultados_acumulados(dicc_estadisticas_acumuladas, cant_partidas):
@@ -139,6 +153,7 @@ def jugar_una_partida(nombres_jugadores, nombre_ultimo_ganador):
     todos_perdieron = False
     cant_perdedores = 0
     nombre_ultimo_ganador = ""
+    perdedores = []
     
     while not existe_ganador and not todos_perdieron:
         i = 0 #para jugar multiples veces
@@ -161,9 +176,13 @@ def jugar_una_partida(nombres_jugadores, nombre_ultimo_ganador):
                     dicc_estadisticas_partida[jugador][const.EST_JUGADOR_INDICE_PUNTAJE] += const.PUNTAJE_ACIERTO_PALABRA
             
             else:
-                cant_perdedores += 1
-                if cant_perdedores == len(nombres_jugadores):
-                    todos_perdieron = True
+                if jugador in perdedores:
+                    cant_perdedores += 0
+                else:
+                    cant_perdedores += 1
+                    perdedores.append(jugador)
+                    if cant_perdedores == len(nombres_jugadores):
+                        todos_perdieron = True
 
             i += 1
         
@@ -207,7 +226,7 @@ def jugar_multiples_partidas():
         seguir_jugando = ""
         while seguir_jugando.lower() not in ["si", "no"]: #mientras que la respuesta a seguir jugando no sea si o no,
             # le va a seguir preguntando si desea seguir jugando
-            print ("-----Ingrese si o no-----")
+            #print ("-----Ingrese si o no-----")
             seguir_jugando = input(f"\n{const.SEGUIR_JUGANDO}")
 
     print(const.MENSAJE_DESPEDIDA)
