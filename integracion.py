@@ -26,11 +26,13 @@ def preguntar_recarga_csv():
         jugar_multiples_partidas()
     else:
         recargar_palabras = input("Desea recargar el archivo de palabras?: ")
-        if recargar_palabras.lower() == "si": #TODO: AGREGAR VALIDACION SI SE INGRESA ALGO DISTINTO DE SI
+        while recargar_palabras.lower() not in ("no", "si"):
+            recargar_palabras = input("Ingrese SI o NO: ")
+        if recargar_palabras.lower() == "si":
             recargar_csv()
             print("Hemos creado el archivo de palabras!")
             jugar_multiples_partidas()
-        else:
+        elif recargar_palabras.lower() == "no":
             jugar_multiples_partidas()
 
 
@@ -41,17 +43,15 @@ def seleccion_palabra(desea_letras):
 
     if desea_letras.lower() == 'si':
         cant_letras = input('Cuantas letras? ')
-        palabra_adivinar = palabrasmenos.elegir_palabra(lista_palabras, int(cant_letras))
 
-        while not cant_letras.isnumeric() or palabra_adivinar == None:
-
+        while not cant_letras.isnumeric() or palabrasmenos.elegir_palabra(lista_palabras, int(cant_letras)) == None:
             if not cant_letras.isnumeric():
-                cant_letras = input('Ingrese cantidad de letras correcta: ') #TODO: VER ERROR SI PONES STRING, y si sacas el int queda tildado
-            elif palabra_adivinar == None:
+                cant_letras = input('Ingrese cantidad de letras correcta: ')
+
+            elif palabrasmenos.elegir_palabra(lista_palabras, int(cant_letras)) == None:
                 cant_letras = input(
                     f'No hay palabras con esa longitud. Elige una longitud entre {const.LONGITUD_MINIMA_PALABRA} y {const.LONGITUD_MAXIMA_PALABRA}: ')
-
-            palabra_adivinar = palabrasmenos.elegir_palabra(lista_palabras, int(cant_letras)) #TODO: VER ERROR SI PONES STRING, y si sacas el int queda tildado
+        palabra_adivinar = palabrasmenos.elegir_palabra(lista_palabras, int(cant_letras))
 
     elif desea_letras.lower() == 'no':
         palabra_adivinar = palabrasmenos.elegir_palabra(lista_palabras)
@@ -83,8 +83,3 @@ def jugar_multiples_partidas():
 
 
 preguntar_recarga_csv()
-
-
-
-
-
