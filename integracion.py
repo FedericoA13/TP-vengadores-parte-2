@@ -41,10 +41,10 @@ def asignar_palabras_jugadores(nombres_jugadores):
     while saber_si_quiere_letras.lower() != "si" and saber_si_quiere_letras.lower() != "no":
         saber_si_quiere_letras = input(const.DESEA_LETRAS)    
     
-    if saber_si_quiere_letras == "si":
+    if saber_si_quiere_letras.lower() == "si":
         cant_letras = input('Cuantas letras? ')
     
-    elif saber_si_quiere_letras == "no":
+    elif saber_si_quiere_letras.lower() == "no":
         # En el caso de "no" se crea una lista con las longuitudes que tenemos
         lista = list(range(5, 16))
         # Se elige un numero al azar de esa lista que sera la cantidad de letras
@@ -65,6 +65,8 @@ def asignar_palabras_jugadores(nombres_jugadores):
 
 def actualizar_estadisticas_acumuladas(dicc_estadisticas_acumuladas, dicc_estadisticas_partida):
     """
+    Autor: Alejandro Schamun.
+    
     Actualiza las estadísticas acumuladas de todas las partidas.
     Ordena los datos de los jugadores en base a su puntaje total.
 
@@ -100,6 +102,8 @@ def actualizar_estadisticas_acumuladas(dicc_estadisticas_acumuladas, dicc_estadi
 
 def mostrar_resultados_acumulados(dicc_estadisticas_acumuladas, cant_partidas):
     """
+    Autor: Alejandro Schamun.
+    
     Muestra los resultados totales luego de cada partida.
     """
     print(f"\n====================== Resultados Generales ======================")
@@ -117,6 +121,8 @@ def mostrar_resultados_acumulados(dicc_estadisticas_acumuladas, cant_partidas):
 
 def jugar_una_partida(nombres_jugadores, nombre_ultimo_ganador):
     """
+    Autora: Abril Katherine Chavaño.
+    
     Juega una partida
 
     """
@@ -171,6 +177,9 @@ def jugar_una_partida(nombres_jugadores, nombre_ultimo_ganador):
 
 def jugar_multiples_partidas():
     """
+
+    Autora: Abril Katherine Chavaño.
+    
     Funcion principal.
 
     """
@@ -196,8 +205,9 @@ def jugar_multiples_partidas():
         mostrar_resultados_acumulados(dicc_estadisticas_acumuladas, cant_partidas)
 
         seguir_jugando = ""
-        while seguir_jugando not in ["si", "no"]: #mientras que la respuesta a seguir jugando no sea si o no,
+        while seguir_jugando.lower() not in ["si", "no"]: #mientras que la respuesta a seguir jugando no sea si o no,
             # le va a seguir preguntando si desea seguir jugando
+            print ("-----Ingrese si o no-----")
             seguir_jugando = input(f"\n{const.SEGUIR_JUGANDO}")
 
     print(const.MENSAJE_DESPEDIDA)

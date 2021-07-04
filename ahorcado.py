@@ -116,51 +116,32 @@ def mostrar_mensaje_final(palabra, letras_adivinadas, letra):
     
     print(mensaje)
 
-def solicitar_nombre(nombres_jugadores):
-    """
-    Solicita el ingreso de un nombre y valida que no se encuentre en la lista de nombres recibida por parámetro,
-    """
-    nombre_correcto = False
-    nombre_jugador = ""
-
-    while not nombre_correcto:
-        repite_nombre = False
-        nombre_jugador = input("Ingrese su nombre (Presione enter para salir): ")
-
-        for nombre in nombres_jugadores:
-            if nombre.lower() == nombre_jugador.lower():
-                repite_nombre = True
-
-        if not repite_nombre:
-            nombre_correcto = True
-        else:
-            print("El nombre ingresado ya existe")
-
-    return nombre_jugador.lower()
-
 def solicitar_nombres_jugadores():
     """
-    Solicita el ingreso de los nombres de los jugadores. Valida que no sean más de 5 y que no se repitan.
-    Devuelve una lista con los nombres.
+    Autor: Facundo Sanso.
+    
     """
     nombres_jugadores = []
-    numero_jugador = 1
-
-    print(f"Jugador {numero_jugador}")
-    nombre = solicitar_nombre(nombres_jugadores)
-
-    while nombre != "" and numero_jugador <= 5:
-        numero_jugador += 1
-        nombres_jugadores.append(nombre)
-
-        if numero_jugador <= 5:
-            print(f"Jugador {numero_jugador}")
-            nombre = solicitar_nombre(nombres_jugadores)
-
+    print ("Presionar enter para dejar de ingresar nombres")
+    jugador = input("Nuevo Jugador (Max 5 jugadores): ")
+    while len (nombres_jugadores) < 5 and jugador != "":
+        if jugador.lower() not in nombres_jugadores:
+            nombres_jugadores.append(jugador)
+            if len (nombres_jugadores) < 5:
+                print ("Presionar enter para dejar de ingresar nombres")
+                jugador = input("Nuevo Jugador (Max 5 jugadores): ")
+        else:
+            print ("El nombre ya fue ingresado")
+            print ("Presionar enter para dejar de ingresar nombres")
+            jugador = input("Nuevo Jugador (Max 5 jugadores): ")
+             
+        
     return nombres_jugadores
 
 def asignar_turno_jugadores(nombres_jugadores, ganador):
     """
+    Autor: Facundo Sanso.
+    
     Ordena al azar los turnos de los jugadores.
     Si se jugaron partidas anteriores asigna el primer turno al último ganador.
     """
@@ -177,6 +158,8 @@ def asignar_turno_jugadores(nombres_jugadores, ganador):
 
 def informar_turnos_jugadores(nombres_jugadores):
     """
+    Autor: Facundo Sanso.
+    
     Muestra cual es el turno de cada jugador.
     """
     print("\nTurnos de los jugadores:")
@@ -187,6 +170,8 @@ def informar_turnos_jugadores(nombres_jugadores):
 
 def inicializar_variables(lista_estadisticas_jugador):
     """
+    Autor: Alejandro Schamun.
+    
     La funcion recibe una lista y agarra cada uno de los elementos"
     """
     # lista completa para no pasar las variables por separado. Esta asociada a un dicc_estadisticas_jugador donde la
@@ -243,19 +228,48 @@ def jugar_ahorcado(lista_estadisticas_jugador):
 
     return [palabra, puntaje, letras_adivinadas, letras_erroneas, gano]
 
+
 """
-def multijugador():
-    lista_de_jugadores = [] 
-    jugador = input("Nuevo Jugador (Max 5 jugadores)(Presionar enter para dejar de ingresar nombres): ")
-    while len (lista_de_jugadores) < 5 and jugador != "":
-        if jugador.lower() not in lista_de_jugadores:
-            lista_de_jugadores.append(jugador)
-            if len (lista_de_jugadores) < 5:
-                jugador = input("Nuevo Jugador (Max 5 jugadores)(Presionar enter para dejar de ingresar nombres): ")
+def solicitar_nombre(nombres_jugadores):
+"""
+    #Solicita el ingreso de un nombre y valida que no se encuentre en la lista de nombres recibida por parámetro,
+"""
+    nombre_correcto = False
+    nombre_jugador = ""
+
+    while not nombre_correcto:
+        repite_nombre = False
+        nombre_jugador = input("Ingrese su nombre (Presione enter para salir): ")
+
+        for nombre in nombres_jugadores:
+            if nombre.lower() == nombre_jugador.lower():
+                repite_nombre = True
+
+        if not repite_nombre:
+            nombre_correcto = True
         else:
-            print ("El nombre ya fue ingresado")
-            jugador = input("Nuevo Jugador (Max 5 jugadores)(Preseionar enter para dejar de ingresar nombres): ")
-             
-        
-    return lista_de_jugadores
+            print("El nombre ingresado ya existe")
+
+    return nombre_jugador.lower()
+
+def solicitar_nombres_jugadores():
+"""
+    #Solicita el ingreso de los nombres de los jugadores. Valida que no sean más de 5 y que no se repitan.
+    #Devuelve una lista con los nombres.
+"""
+    nombres_jugadores = []
+    numero_jugador = 1
+
+    print(f"Jugador {numero_jugador}")
+    nombre = solicitar_nombre(nombres_jugadores)
+
+    while nombre != "" and numero_jugador <= 5:
+        numero_jugador += 1
+        nombres_jugadores.append(nombre)
+
+        if numero_jugador <= 5:
+            print(f"Jugador {numero_jugador}")
+            nombre = solicitar_nombre(nombres_jugadores)
+
+    return nombres_jugadores
 """
