@@ -125,8 +125,10 @@ def solicitar_nombres_jugadores():
     print ("Presionar enter para dejar de ingresar nombres")
     jugador = input("Nuevo Jugador (Max 5 jugadores): ")
     while len (nombres_jugadores) < 5 and jugador != "":
+    
         if jugador.lower() not in nombres_jugadores:
             nombres_jugadores.append(jugador)
+            
             if len (nombres_jugadores) < 5:
                 print ("Presionar enter para dejar de ingresar nombres")
                 jugador = input("Nuevo Jugador (Max 5 jugadores): ")
