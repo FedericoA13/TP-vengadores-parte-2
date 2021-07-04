@@ -3,12 +3,12 @@ import ahorcado
 import constantes as const
 import os
 
-archivo_cuentos = open('Cuentos.txt', 'r')
-archivo_noches = open('Las 1000 Noches y 1 Noche.txt', 'r')
-archivo_arania = open('La araña negra - tomo 1.txt', 'r')
-
 
 def recargar_csv():
+    archivo_cuentos = open('Cuentos.txt', 'r')
+    archivo_noches = open('Las 1000 Noches y 1 Noche.txt', 'r')
+    archivo_arania = open('La araña negra - tomo 1.txt', 'r')
+
     lista_archivos = [archivo_cuentos, archivo_noches, archivo_arania]
     dicc = palabrasmenos.creacion_de_dicc(lista_archivos)
     dicc_ordenado = palabrasmenos.ordenar_dicc(dicc)
@@ -50,7 +50,7 @@ def seleccion_palabra(desea_letras):
 
             elif palabrasmenos.elegir_palabra(lista_palabras, int(cant_letras)) == None:
                 cant_letras = input(
-                    f'No hay palabras con esa longitud. Elige una longitud entre {const.LONGITUD_MINIMA_PALABRA} y {const.LONGITUD_MAXIMA_PALABRA}: ')
+                    f'No hay palabras con esa longitud. Elige una longitud entre {const.LONG_PALABRA_MIN} y {const.LONG_PALABRA_MAX}: ')
         palabra_adivinar = palabrasmenos.elegir_palabra(lista_palabras, int(cant_letras))
 
     elif desea_letras.lower() == 'no':

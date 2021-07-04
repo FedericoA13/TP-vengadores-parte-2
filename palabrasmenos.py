@@ -35,7 +35,7 @@ def creacion_de_dicc(lista_archivos):
     num_archivo = 0
 
     for archivo in lista_archivos:
-        renglon = leer_info(archivo)
+        renglon = const.leer_info(archivo)
         contador_lineas_vacias = 0
         while contador_lineas_vacias < 20:
             if not renglon:
@@ -61,7 +61,7 @@ def ordenar_dicc(dicc):
 
 
 def creacion_texto(dicc):
-    archivo_palabras = open('palabras.csv', 'a')
+    archivo_palabras = open('palabras.csv', 'w')
     for palabra, apariciones in dicc.items():
         archivo_palabras.write(
             f'{palabra},{apariciones[0]},{apariciones[1]},{apariciones[2]} \n')
@@ -76,7 +76,7 @@ def generar_palabras_candidatas(archivo):
 
     while renglon:
         palabra = renglon[0]
-        if const.LONGITUD_MAXIMA_PALABRA >= len(palabra) >= const.LONGITUD_MINIMA_PALABRA:
+        if const.LONG_PALABRA_MAX >= len(palabra) >= const.LONG_PALABRA_MIN:
             lista_palabras_candidatas.append(palabra)
         renglon = leer_info(archivo, ',')
 
@@ -89,4 +89,3 @@ def elegir_palabra(lista_palabras, cant_letras=0):
         lista_palabras = list(filter(lambda palabra: len(palabra) == cant_letras, lista_palabras))
 
     return random.choice(lista_palabras) if len(lista_palabras) > 0 else None
-
