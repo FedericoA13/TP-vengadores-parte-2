@@ -5,6 +5,7 @@ import os
 
 
 def recargar_csv():
+
     archivo_cuentos = open('Cuentos.txt', 'r')
     archivo_noches = open('Las 1000 Noches y 1 Noche.txt', 'r')
     archivo_arania = open('La araña negra - tomo 1.txt', 'r')
@@ -20,6 +21,7 @@ def recargar_csv():
 
 
 def preguntar_recarga_csv():
+
     if not os.path.exists("palabras.csv"):
         recargar_csv()
         print("El archivo de palabras no existia y lo hemos creado!")
@@ -36,22 +38,28 @@ def preguntar_recarga_csv():
             jugar_multiples_partidas()
 
 
-def seleccion_palabra(desea_letras):
+def seleccion_cant_letras():
+
+    cant_letras = input('Cuantas letras? ')
+
+    while not cant_letras.isnumeric() or palabrasmenos.elegir_palabra(lista_palabras, int(cant_letras)) == None:
+        if not cant_letras.isnumeric():
+            cant_letras = input('Ingrese cantidad de letras correcta: ')
+
+        elif palabrasmenos.elegir_palabra(lista_palabras, int(cant_letras)) == None:
+            cant_letras = input(
+                f'No hay palabras con esa longitud. Elige una longitud entre {const.LONG_PALABRA_MIN} y {const.LONG_PALABRA_MAX}: ')
+
+    return int(cant_letras)
+
+
+def seleccion_palabra(desea_letras, cant_letras):
 
     archivo_palabras = open('palabras.csv', 'r')
     lista_palabras = palabrasmenos.generar_palabras_candidatas(archivo_palabras)
 
     if desea_letras.lower() == 'si':
-        cant_letras = input('Cuantas letras? ')
-
-        while not cant_letras.isnumeric() or palabrasmenos.elegir_palabra(lista_palabras, int(cant_letras)) == None:
-            if not cant_letras.isnumeric():
-                cant_letras = input('Ingrese cantidad de letras correcta: ')
-
-            elif palabrasmenos.elegir_palabra(lista_palabras, int(cant_letras)) == None:
-                cant_letras = input(
-                    f'No hay palabras con esa longitud. Elige una longitud entre {const.LONG_PALABRA_MIN} y {const.LONG_PALABRA_MAX}: ')
-        palabra_adivinar = palabrasmenos.elegir_palabra(lista_palabras, int(cant_letras))
+        palabra_adivinar = palabrasmenos.elegir_palabra(lista_palabras, cant_letras)
 
     elif desea_letras.lower() == 'no':
         palabra_adivinar = palabrasmenos.elegir_palabra(lista_palabras)
@@ -64,12 +72,25 @@ def seleccion_palabra(desea_letras):
     archivo_palabras.close()
 
 
+def quiere_letras():
+
+    desea_letras = input(const.DESEA_LETRAS)
+    while desea_letras.lower() not in ('no', 'si'):
+        desea_letras = input(const.DESEA_LETRAS)
+
+    return desea_letras
+
+
 def jugar_una_partida():
-    palabra_a_adivinar = seleccion_palabra(input(const.DESEA_LETRAS))
-    return ahorcado.jugar_ahorcado(palabra_a_adivinar)
+
+    desea_letras = quiere_letras()
+    cant_letras = seleccion_cant_letras()
+    palabra_adivinar = seleccion_palabra(desea_letras, cant_letras)
+    return ahorcado.jugar_ahorcado(palabra_adivinar)
 
 
 def jugar_multiples_partidas():
+
     puntaje = jugar_una_partida()
 
     seguir_jugando = input(f"\n{const.SEGUIR_JUGANDO}")
