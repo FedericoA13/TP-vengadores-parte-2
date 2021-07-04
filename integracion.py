@@ -38,7 +38,7 @@ def preguntar_recarga_csv():
             jugar_multiples_partidas()
 
 
-def seleccion_cant_letras():
+def verificar_cant_letras(lista_palabras):
 
     cant_letras = input('Cuantas letras? ')
 
@@ -53,54 +53,54 @@ def seleccion_cant_letras():
     return int(cant_letras)
 
 
-def seleccion_palabra(desea_letras, cant_letras):
+def seleccion_palabra(lista_palabras, cant_letras=0):
 
-    archivo_palabras = open('palabras.csv', 'r')
-    lista_palabras = palabrasmenos.generar_palabras_candidatas(archivo_palabras)
-
-    if desea_letras.lower() == 'si':
+    if cant_letras != 0:
         palabra_adivinar = palabrasmenos.elegir_palabra(lista_palabras, cant_letras)
 
-    elif desea_letras.lower() == 'no':
+    else:
         palabra_adivinar = palabrasmenos.elegir_palabra(lista_palabras)
 
-    else:
-        palabra_adivinar = seleccion_palabra(input(const.INTRODUZCA_COMANDO_DE_NUEVO))
-
     return palabra_adivinar
-
-    archivo_palabras.close()
 
 
 def quiere_letras():
 
     desea_letras = input(const.DESEA_LETRAS)
     while desea_letras.lower() not in ('no', 'si'):
-        desea_letras = input(const.DESEA_LETRAS)
+        desea_letras = input(const.INTRODUZCA_COMANDO_DE_NUEVO)
 
     return desea_letras
 
 
-def jugar_una_partida():
+def jugar_una_partida(lista_palabras):
 
     desea_letras = quiere_letras()
-    cant_letras = seleccion_cant_letras()
-    palabra_adivinar = seleccion_palabra(desea_letras, cant_letras)
+    if desea_letras == "si":
+        cant_letras = verificar_cant_letras(lista_palabras)
+        palabra_adivinar = seleccion_palabra(lista_palabras, cant_letras)
+    else:
+        palabra_adivinar = seleccion_palabra(lista_palabras)
+
     return ahorcado.jugar_ahorcado(palabra_adivinar)
 
 
 def jugar_multiples_partidas():
+    archivo_palabras = open('palabras.csv', 'r')
+    lista_palabras = palabrasmenos.generar_palabras_candidatas(archivo_palabras)
 
-    puntaje = jugar_una_partida()
+    puntaje = jugar_una_partida(lista_palabras)
 
     seguir_jugando = input(f"\n{const.SEGUIR_JUGANDO}")
 
     while seguir_jugando.lower() == "si":
-        puntaje += jugar_una_partida()
+        puntaje += jugar_una_partida(lista_palabras)
         seguir_jugando = input(f"\n{const.SEGUIR_JUGANDO}")
 
     print(f"\nPuntaje total = {puntaje}")
     print(const.MENSAJE_DESPEDIDA)
+
+    archivo_palabras.close()
 
 
 preguntar_recarga_csv()
