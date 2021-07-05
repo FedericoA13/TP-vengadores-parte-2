@@ -1,5 +1,5 @@
 import constantes as const
-
+import random
 
 def ofuscar_palabra(palabra, letras_adivinadas):
     """
@@ -70,7 +70,7 @@ def tiene_intentos(letras_erroneas):
     Devuelve True si el usuario cuenta con intentos disponibles, es decir,
     si la cantidad de letras erróneas ingresadas es menor a la cantidad máxima de desaciertos permitidos.
     """
-    return len(letras_erroneas) < const.MAXIMOS_DESACIERTOS_PERMITIDOS
+    return len(letras_erroneas) < const.MAX_DESACIERTOS
 
 
 def finalizar_juego(letra):
@@ -116,8 +116,85 @@ def mostrar_mensaje_final(palabra, letras_adivinadas, letra):
     
     print(mensaje)
 
+def solicitar_nombres_jugadores():
+    """
+    Autor: Facundo Sanso.
+    
+    """
+    nombres_jugadores = []
+    print ("Presionar enter para dejar de ingresar nombres")
+    jugador = input("Nuevo Jugador (Max 5 jugadores): ")
+    
+    while len (nombres_jugadores) == 0 and jugador == "":
+        print ("Ingresar al menos a un jugador")
+        print ("Presionar enter para dejar de ingresar nombres")
+        jugador = input("Nuevo Jugador (Max 5 jugadores): ")
+        
+       
+    while len (nombres_jugadores) < 5 and jugador != "":
+    
+        if jugador.lower() not in nombres_jugadores:
+            nombres_jugadores.append(jugador)
+            
+            if len (nombres_jugadores) < 5:
+                print ("Presionar enter para dejar de ingresar nombres")
+                jugador = input("Nuevo Jugador (Max 5 jugadores): ")
+        else:
+            print ("El nombre ya fue ingresado")
+            print ("Presionar enter para dejar de ingresar nombres")
+            jugador = input("Nuevo Jugador (Max 5 jugadores): ")
+                   
+    return nombres_jugadores
 
-def jugar_ahorcado(palabra):
+
+def asignar_turno_jugadores(nombres_jugadores, ganador):
+    """
+    Autor: Facundo Sanso.
+    
+    Ordena al azar los turnos de los jugadores.
+    Si se jugaron partidas anteriores asigna el primer turno al último ganador.
+    """
+    copia_jugadores = nombres_jugadores.copy()
+    random.shuffle(copia_jugadores)
+
+    if ganador != "":
+        copia_jugadores.remove(ganador)
+        nombres_jugadores = [ganador] + copia_jugadores
+    else:
+        nombres_jugadores = copia_jugadores
+    return nombres_jugadores
+
+
+def informar_turnos_jugadores(nombres_jugadores):
+    """
+    Autor: Facundo Sanso.
+    
+    Muestra cual es el turno de cada jugador.
+    """
+    print("\nTurnos de los jugadores:")
+    print("")
+    for i in range(len(nombres_jugadores)):
+        print(f"Turno {i + 1}: {nombres_jugadores[i]}")
+    print("")
+
+def inicializar_variables(lista_estadisticas_jugador):
+    """
+    Autor: Alejandro Schamun.
+    
+    La funcion recibe una lista y agarra cada uno de los elementos"
+    """
+    # lista completa para no pasar las variables por separado. Esta asociada a un dicc_estadisticas_jugador donde la
+    # clave es el jugador
+    palabra = lista_estadisticas_jugador[const.EST_JUGADOR_INDICE_PALABRA]
+    puntaje = lista_estadisticas_jugador[const.EST_JUGADOR_INDICE_PUNTAJE]
+    letras_adivinadas = lista_estadisticas_jugador[const.EST_JUGADOR_INDICE_LETRAS_ADIVINADAS]
+    letras_erroneas = lista_estadisticas_jugador[const.EST_JUGADOR_INDICE_LETRAS_ERRONEAS]
+    gano = lista_estadisticas_jugador[const.EST_JUGADOR_INDICE_GANO]
+
+    return palabra, puntaje, letras_adivinadas, letras_erroneas, gano
+
+
+def jugar_ahorcado(lista_estadisticas_jugador):
     """
     Autor: Alejandro Schamun.
 
@@ -127,30 +204,43 @@ def jugar_ahorcado(palabra):
     Devuelve el puntaje obtenido al terminar de jugar.
     """
 
-    letras_adivinadas = []
-    letras_erroneas = []
-    puntaje = 0
+    palabra, puntaje, letras_adivinadas, letras_erroneas, gano = inicializar_variables(lista_estadisticas_jugador)
+
 
     mostrar_informacion(const.MENSAJE_INICIAL, palabra, letras_adivinadas, letras_erroneas)
     letra = pedir_letra(letras_adivinadas + letras_erroneas)
 
-    while not finalizar_juego(letra) and tiene_intentos(letras_erroneas) and not juego_ganado(palabra, letras_adivinadas):
+    tuvo_errores = False
+
+    while not finalizar_juego(letra) and tiene_intentos(letras_erroneas) and not gano and not tuvo_errores:
 
         if letra in palabra:
             letras_adivinadas.append(letra)
             mensaje = const.MENSAJE_ACIERTO
-            puntaje += const.PUNTAJE_ACIERTO
+            puntaje += const.PUNTOS_ACIERTOS
 
         else:
             letras_erroneas.append(letra)
             mensaje = const.MENSAJE_DESACIERTO
-            puntaje += const.PUNTAJE_DESACIERTO
+            puntaje -= const.PUNTOS_DESACIERTOS
+            tuvo_errores = True
 
         mostrar_informacion(mensaje, palabra, letras_adivinadas, letras_erroneas)
 
-        if tiene_intentos(letras_erroneas) and not juego_ganado(palabra, letras_adivinadas):
-            letra = pedir_letra(letras_adivinadas + letras_erroneas)
-    
-    mostrar_mensaje_final(palabra, letras_adivinadas, letra)
+        gano = juego_ganado(palabra, letras_adivinadas)
 
-    return puntaje
+        if tiene_intentos(letras_erroneas) and not gano and not tuvo_errores:
+            letra = pedir_letra(letras_adivinadas + letras_erroneas)
+            
+    if letra in const.LETRAS_FIN:
+        relleno = list(range(0, const.MAX_DESACIERTOS - len(letras_erroneas)))
+        for i in relleno:
+            letras_erroneas.append("")
+
+            puntaje -= const.PUNTOS_DESACIERTOS
+                
+    if not tiene_intentos(letras_erroneas):
+        mostrar_mensaje_final(palabra, letras_adivinadas, letra)
+
+    return [palabra, puntaje, letras_adivinadas, letras_erroneas, gano]
+

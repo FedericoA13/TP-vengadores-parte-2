@@ -1,5 +1,13 @@
-SIGNO_PREGUNTA = "?"
+def leer_info(archivo, separacion=' '):
+    linea = archivo.readline()
+    if linea:
+        registro = linea.rstrip('\n').replace('--', ' ').split(separacion)
+    else:
+        registro = False
+    return registro
 
+
+SIGNO_PREGUNTA = "?"
 MENSAJE_INICIAL = "Palabra a adivinar"
 MENSAJE_ACIERTO = "Muy bien!!!"
 MENSAJE_DESACIERTO = "Lo siento!!!"
@@ -11,11 +19,39 @@ SEGUIR_JUGANDO = "Desea seguir jugando (si o no): "
 DESEA_LETRAS = '¿Desea una cantidad de letras específica? (si/no): '
 INTRODUZCA_COMANDO_DE_NUEVO = "No entiendo su respuesta, introduzca si o no: "
 
+MAX_USUARIOS = 5
+LONG_PALABRA_MIN = 5
+LONG_PALABRA_MAX = 18
+MAX_DESACIERTOS = 7
+PUNTOS_ACIERTOS = 2
+PUNTOS_DESACIERTOS = 1
+PUNTOS_ADIVINA_PALABRA = 10
+PUNTOS_RESTA_GANA_PROGRAMA = 5
+INDICE_CLAVE = 0
+
 LETRAS_FIN = ["FIN", "0"]
 
-LONGITUD_MINIMA_PALABRA = 5
-LONGITUD_MAXIMA_PALABRA = 16
-INDICE_CLAVE = 0
-MAXIMOS_DESACIERTOS_PERMITIDOS = 7
-PUNTAJE_ACIERTO = 10
-PUNTAJE_DESACIERTO = -5
+# Indices diccionario estadísticas jugadores
+EST_JUGADOR_INDICE_PALABRA = 0
+EST_JUGADOR_INDICE_PUNTAJE = 1
+EST_JUGADOR_INDICE_LETRAS_ADIVINADAS = 2
+EST_JUGADOR_INDICE_LETRAS_ERRONEAS = 3
+EST_JUGADOR_INDICE_GANO = 4
+
+# Indices diccionario estadísticas acumuladas
+EST_ACUM_INDICE_PUNTAJE = 0
+EST_ACUM_INDICE_CANT_ACIERTOS = 1
+EST_ACUM_INDICE_CANT_DESACIERTOS = 2
+EST_ACUM_INDICE_CANT_VICTORIAS = 3
+
+with open('configuracion.csv', 'r') as config:
+    linea = leer_info(config, ',')
+    while linea:
+        constante = linea[0]
+        valor = linea[1]
+        dicc_ctes = locals()
+        if constante in dicc_ctes:
+            if valor.isnumeric():
+                valor = int(valor)
+            dicc_ctes[constante] = valor
+        linea = leer_info(config, ',')
