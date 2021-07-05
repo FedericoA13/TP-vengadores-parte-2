@@ -1,6 +1,7 @@
 import constantes as const
 import random
 
+
 def ofuscar_palabra(palabra, letras_adivinadas):
     """
     Autor: Joaquin Mendaña.
@@ -12,7 +13,7 @@ def ofuscar_palabra(palabra, letras_adivinadas):
     - letras_adivinadas: letras que no deben ofuscarse
     """
 
-    return "".join(letra if letra in letras_adivinadas else const.SIGNO_PREGUNTA for letra in palabra)
+    return "".join(letra if letra in letras_adivinadas else const.CARACTER_OCULTO for letra in palabra)
 
 
 def mostrar_informacion(mensaje, palabra, letras_adivinadas, letras_erroneas):
@@ -23,7 +24,8 @@ def mostrar_informacion(mensaje, palabra, letras_adivinadas, letras_erroneas):
     """
 
     palabra = ofuscar_palabra(palabra, letras_adivinadas)
-    print(f"\n{mensaje} → {palabra}  Aciertos: {len(letras_adivinadas)}  Desaciertos: {len(letras_erroneas)} - {letras_erroneas}")
+    print(
+        f"\n{mensaje} → {palabra}  Aciertos: {len(letras_adivinadas)}  Desaciertos: {len(letras_erroneas)} - {letras_erroneas}")
 
 
 def pedir_letra(letras_usadas):
@@ -70,7 +72,7 @@ def tiene_intentos(letras_erroneas):
     Devuelve True si el usuario cuenta con intentos disponibles, es decir,
     si la cantidad de letras erróneas ingresadas es menor a la cantidad máxima de desaciertos permitidos.
     """
-    return len(letras_erroneas) < const.MAX_DESACIERTOS
+    return len(letras_erroneas) < const.MAX_DESACIERTOS_PERMITIDOS
 
 
 def finalizar_juego(letra):
@@ -106,15 +108,16 @@ def mostrar_mensaje_final(palabra, letras_adivinadas, letra):
     """
 
     if juego_ganado(palabra, letras_adivinadas):
-        mensaje = "¡Ganaste!"
+        mensaje = const.MENSAJE_VICTORIA
 
     elif letra in const.LETRAS_FIN:
-        mensaje = "Gracias por participar"
-    
+        mensaje = const.MENSAJE_DESPEDIDA
+
     else:
-        mensaje = f"Perdiste :(, la palabra era: {palabra}"
-    
+        mensaje = f"{const.MENSAJE_DERROTA}, la palabra era: {palabra}"
+
     print(mensaje)
+
 
 def solicitar_nombres_jugadores():
     """
@@ -122,28 +125,27 @@ def solicitar_nombres_jugadores():
     
     """
     nombres_jugadores = []
-    print ("Presionar enter para dejar de ingresar nombres")
-    jugador = input("Nuevo Jugador (Max 5 jugadores): ")
-    
-    while len (nombres_jugadores) == 0 and jugador == "":
-        print ("Ingresar al menos a un jugador")
-        print ("Presionar enter para dejar de ingresar nombres")
-        jugador = input("Nuevo Jugador (Max 5 jugadores): ")
-        
-       
-    while len (nombres_jugadores) < 5 and jugador != "":
-    
+    print(const.MENSAJE_DEJAR_DE_INGRESAR_NOMBRES)
+    jugador = input(const.MENSAJE_NUEVO_JUGADOR)
+
+    while len(nombres_jugadores) == 0 and jugador == "":
+        print(const.INGRESO_MINIMO_JUGADORES)
+        print(const.MENSAJE_DEJAR_DE_INGRESAR_NOMBRES)
+        jugador = input(const.MENSAJE_NUEVO_JUGADOR)
+
+    while len(nombres_jugadores) < 5 and jugador != "":
+
         if jugador.lower() not in nombres_jugadores:
             nombres_jugadores.append(jugador)
-            
-            if len (nombres_jugadores) < 5:
-                print ("Presionar enter para dejar de ingresar nombres")
-                jugador = input("Nuevo Jugador (Max 5 jugadores): ")
+
+            if len(nombres_jugadores) < 5:
+                print(const.MENSAJE_DEJAR_DE_INGRESAR_NOMBRES)
+                jugador = input(const.MENSAJE_NUEVO_JUGADOR)
         else:
-            print ("El nombre ya fue ingresado")
-            print ("Presionar enter para dejar de ingresar nombres")
-            jugador = input("Nuevo Jugador (Max 5 jugadores): ")
-                   
+            print(const.NOMBRE_YA_INGRESADO)
+            print(const.MENSAJE_DEJAR_DE_INGRESAR_NOMBRES)
+            jugador = input(const.MENSAJE_NUEVO_JUGADOR)
+
     return nombres_jugadores
 
 
@@ -171,11 +173,12 @@ def informar_turnos_jugadores(nombres_jugadores):
     
     Muestra cual es el turno de cada jugador.
     """
-    print("\nTurnos de los jugadores:")
+    print(f"\n{const.TURNOS_JUGADORES}")
     print("")
     for i in range(len(nombres_jugadores)):
         print(f"Turno {i + 1}: {nombres_jugadores[i]}")
     print("")
+
 
 def inicializar_variables(lista_estadisticas_jugador):
     """
@@ -183,8 +186,6 @@ def inicializar_variables(lista_estadisticas_jugador):
     
     La funcion recibe una lista y agarra cada uno de los elementos"
     """
-    # lista completa para no pasar las variables por separado. Esta asociada a un dicc_estadisticas_jugador donde la
-    # clave es el jugador
     palabra = lista_estadisticas_jugador[const.EST_JUGADOR_INDICE_PALABRA]
     puntaje = lista_estadisticas_jugador[const.EST_JUGADOR_INDICE_PUNTAJE]
     letras_adivinadas = lista_estadisticas_jugador[const.EST_JUGADOR_INDICE_LETRAS_ADIVINADAS]
@@ -206,7 +207,6 @@ def jugar_ahorcado(lista_estadisticas_jugador):
 
     palabra, puntaje, letras_adivinadas, letras_erroneas, gano = inicializar_variables(lista_estadisticas_jugador)
 
-
     mostrar_informacion(const.MENSAJE_INICIAL, palabra, letras_adivinadas, letras_erroneas)
     letra = pedir_letra(letras_adivinadas + letras_erroneas)
 
@@ -217,12 +217,12 @@ def jugar_ahorcado(lista_estadisticas_jugador):
         if letra in palabra:
             letras_adivinadas.append(letra)
             mensaje = const.MENSAJE_ACIERTO
-            puntaje += const.PUNTOS_ACIERTOS
+            puntaje += const.PUNTOS_ACIERTO_LETRA
 
         else:
             letras_erroneas.append(letra)
             mensaje = const.MENSAJE_DESACIERTO
-            puntaje -= const.PUNTOS_DESACIERTOS
+            puntaje -= const.PUNTOS_DESACIERTOS_LETRA
             tuvo_errores = True
 
         mostrar_informacion(mensaje, palabra, letras_adivinadas, letras_erroneas)
@@ -231,16 +231,15 @@ def jugar_ahorcado(lista_estadisticas_jugador):
 
         if tiene_intentos(letras_erroneas) and not gano and not tuvo_errores:
             letra = pedir_letra(letras_adivinadas + letras_erroneas)
-            
+
     if letra in const.LETRAS_FIN:
-        relleno = list(range(0, const.MAX_DESACIERTOS - len(letras_erroneas)))
+        relleno = list(range(0, const.MAX_DESACIERTOS_PERMITIDOS - len(letras_erroneas)))
         for i in relleno:
             letras_erroneas.append("")
 
-            puntaje -= const.PUNTOS_DESACIERTOS
-                
+            puntaje -= const.PUNTOS_DESACIERTOS_LETRA
+
     if not tiene_intentos(letras_erroneas):
         mostrar_mensaje_final(palabra, letras_adivinadas, letra)
 
     return [palabra, puntaje, letras_adivinadas, letras_erroneas, gano]
-
