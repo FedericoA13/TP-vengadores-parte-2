@@ -3,7 +3,9 @@ import constantes as const
 
 
 def leer_info(archivo, separacion=' '):
-
+    """
+    Autores: Joaquin Mendaña, Martin Morono, Federico Aldrighetti
+    """
     linea = archivo.readline()
     if linea:
         registro = linea.rstrip('\n').replace('--', ' ').split(separacion)
@@ -13,6 +15,9 @@ def leer_info(archivo, separacion=' '):
 
 
 def quitar_tildes(palabra):
+    """
+    Autores: Joaquin Mendaña, Martin Morono, Federico Aldrighetti
+    """
 
     cambios = (("á", "a"), ("é", "e"), ("í", "i"), ("ó", "o"), ("ú", "u"))
     for vocal_con_tilde, vocal_sin_tilde in cambios:
@@ -22,6 +27,9 @@ def quitar_tildes(palabra):
 
 
 def limpiar_palabra(palabra):
+    """
+    Autores: Joaquin Mendaña, Martin Morono, Federico Aldrighetti
+    """
 
     palabra_limpia = "".join(caracter.lower() if caracter.isalpha()
                              else "" for caracter in palabra)
@@ -31,6 +39,9 @@ def limpiar_palabra(palabra):
 
 
 def creacion_de_dicc(lista_archivos):
+    """
+    Autores: Joaquin Mendaña, Martin Morono, Federico Aldrighetti
+    """
     diccionario = {}
     num_archivo = 0
 
@@ -56,11 +67,17 @@ def creacion_de_dicc(lista_archivos):
 
 
 def ordenar_dicc(dicc):
+    """
+    Autores: Joaquin Mendaña, Martin Morono, Federico Aldrighetti
+    """
 
     return dict(sorted(dicc.items(), key=lambda i: i[0]))
 
 
 def creacion_texto(dicc):
+    """
+    Autores: Joaquin Mendaña, Martin Morono, Federico Aldrighetti
+    """
     archivo_palabras = open('palabras.csv', 'w')
     for palabra, apariciones in dicc.items():
         archivo_palabras.write(
@@ -70,6 +87,9 @@ def creacion_texto(dicc):
 
 
 def generar_palabras_candidatas(archivo):
+    """
+    Autores: Joaquin Mendaña, Martin Morono, Federico Aldrighetti
+    """
 
     lista_palabras_candidatas = []
     renglon = leer_info(archivo, ',')
@@ -84,6 +104,9 @@ def generar_palabras_candidatas(archivo):
 
 
 def elegir_palabra(lista_palabras, cant_letras):
+    """
+    Autores: Joaquin Mendaña, Martin Morono, Federico Aldrighetti
+    """
 
     lista_palabras = list(filter(lambda palabra: len(palabra) == cant_letras, lista_palabras))
 

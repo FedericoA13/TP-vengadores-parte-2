@@ -121,7 +121,7 @@ def mostrar_mensaje_final(palabra, letras_adivinadas, letra):
 
 def solicitar_nombres_jugadores():
     """
-    Autor: Facundo Sanso.
+    Autores: Alejandro Schamun, Abril Katherine Chavaño, Facundo Sanso
     
     """
     nombres_jugadores = []
@@ -151,7 +151,7 @@ def solicitar_nombres_jugadores():
 
 def asignar_turno_jugadores(nombres_jugadores, ganador):
     """
-    Autor: Facundo Sanso.
+    Autores: Alejandro Schamun, Abril Katherine Chavaño, Facundo Sanso
     
     Ordena al azar los turnos de los jugadores.
     Si se jugaron partidas anteriores asigna el primer turno al último ganador.
@@ -169,7 +169,7 @@ def asignar_turno_jugadores(nombres_jugadores, ganador):
 
 def informar_turnos_jugadores(nombres_jugadores):
     """
-    Autor: Facundo Sanso.
+    Autores: Alejandro Schamun, Abril Katherine Chavaño, Facundo Sanso
     
     Muestra cual es el turno de cada jugador.
     """
@@ -182,7 +182,7 @@ def informar_turnos_jugadores(nombres_jugadores):
 
 def inicializar_variables(lista_estadisticas_jugador):
     """
-    Autor: Alejandro Schamun.
+    Autores: Alejandro Schamun, Abril Katherine Chavaño, Facundo Sanso
     
     La funcion recibe una lista y agarra cada uno de los elementos"
     """
@@ -197,7 +197,7 @@ def inicializar_variables(lista_estadisticas_jugador):
 
 def jugar_ahorcado(lista_estadisticas_jugador):
     """
-    Autor: Alejandro Schamun.
+    Autores: Alejandro Schamun, Abril Katherine Chavaño, Facundo Sanso
 
     Esta función concreta la partida del juego del ahorcado.
     Al usuario se le da la palabra encriptada, y debe adivinar las letras, con el sistema avisando si

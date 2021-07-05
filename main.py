@@ -7,6 +7,9 @@ import random
 
 
 def recargar_csv():
+    """
+    Autores: Joaquin Mendaña, Martin Morono, Federico Aldrighetti
+    """
     archivo_cuentos = open('Cuentos.txt', 'r')
     archivo_noches = open('Las 1000 Noches y 1 Noche.txt', 'r')
     archivo_arania = open('La araña negra - tomo 1.txt', 'r')
@@ -22,6 +25,9 @@ def recargar_csv():
 
 
 def preguntar_recarga_csv():
+    """
+    Autores: Joaquin Mendaña, Martin Morono, Federico Aldrighetti
+    """
     if not os.path.exists("palabras.csv"):
         recargar_csv()
         print(const.MENSAJE_CREACION_ARCHIVO)
@@ -39,6 +45,9 @@ def preguntar_recarga_csv():
 
 
 def verificar_cant_letras(lista_palabras):
+    """
+    Autores: Alejandro Schamun, Abril Katherine Chavaño, Facundo Sanso
+    """
     cant_letras = input(const.CUANTAS_LETRAS)
 
     while not cant_letras.isnumeric() or generacion_palabras.elegir_palabra(lista_palabras, int(cant_letras)) == None:
@@ -53,12 +62,18 @@ def verificar_cant_letras(lista_palabras):
 
 
 def seleccion_palabra(lista_palabras, longitud_palabra):
+    """
+    Autores: Alejandro Schamun, Abril Katherine Chavaño, Facundo Sanso
+    """
     palabra_adivinar = generacion_palabras.elegir_palabra(lista_palabras, longitud_palabra)
 
     return palabra_adivinar
 
 
 def quiere_letras():
+    """
+    Autores: Alejandro Schamun, Abril Katherine Chavaño, Facundo Sanso
+    """
     desea_letras = input(const.DESEA_LETRAS)
     while desea_letras.lower() not in (const.NEGACION, const.AFIRMACION):
         desea_letras = input(const.MENSAJE_DE_VALIDACION)
@@ -67,6 +82,9 @@ def quiere_letras():
 
 
 def asignar_palabras_jugadores(nombres_jugadores, lista_palabras):
+    """
+    Autores: Alejandro Schamun, Abril Katherine Chavaño, Facundo Sanso
+    """
     palabras_asignadas = {}
 
     desea_letras = quiere_letras()
@@ -85,6 +103,10 @@ def asignar_palabras_jugadores(nombres_jugadores, lista_palabras):
 
 
 def actualizar_estadisticas_acumuladas(dicc_estadisticas_acumuladas, dicc_estadisticas_partida):
+    """
+    Autores: Alejandro Schamun, Abril Katherine Chavaño, Facundo Sanso
+    """
+    
     for jugador in dicc_estadisticas_partida:
         palabra, puntaje, letras_adivinadas, letras_erroneas, gano = ahorcado.inicializar_variables(
             dicc_estadisticas_partida[jugador])
@@ -112,7 +134,7 @@ def actualizar_estadisticas_acumuladas(dicc_estadisticas_acumuladas, dicc_estadi
 
 def mostrar_resultados_acumulados(dicc_estadisticas_acumuladas, cant_partidas):
     """
-    Autor: Alejandro Schamun.
+    Autores: Alejandro Schamun, Abril Katherine Chavaño, Facundo Sanso
 
     Muestra los resultados totales luego de cada partida.
     """
@@ -132,6 +154,10 @@ def mostrar_resultados_acumulados(dicc_estadisticas_acumuladas, cant_partidas):
 
 
 def jugar_una_partida(nombres_jugadores, nombre_ultimo_ganador, lista_palabras):
+    """
+    Autores: Alejandro Schamun, Abril Katherine Chavaño, Facundo Sanso
+    """
+    
     nombres_jugadores = ahorcado.asignar_turno_jugadores(nombres_jugadores, nombre_ultimo_ganador)
     ahorcado.informar_turnos_jugadores(nombres_jugadores)
     dicc_palabras = asignar_palabras_jugadores(nombres_jugadores, lista_palabras)
@@ -184,6 +210,10 @@ def jugar_una_partida(nombres_jugadores, nombre_ultimo_ganador, lista_palabras):
 
 
 def jugar_multiples_partidas():
+    """
+    Autores: Alejandro Schamun, Abril Katherine Chavaño, Facundo Sanso
+    """
+    
     archivo_palabras = open('palabras.csv', 'r')
     lista_palabras = generacion_palabras.generar_palabras_candidatas(archivo_palabras)
 
