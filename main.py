@@ -47,6 +47,9 @@ def preguntar_recarga_csv():
 def verificar_cant_letras(lista_palabras):
     """
     Autores: Alejandro Schamun, Abril Katherine Chavaño, Facundo Sanso
+    
+    Verifica si la cantidad de letras ingresada es valida (Si es un numero y si hay una palabra con esa cantidad de letras )
+    
     """
     cant_letras = input(const.CUANTAS_LETRAS)
 
@@ -64,6 +67,8 @@ def verificar_cant_letras(lista_palabras):
 def seleccion_palabra(lista_palabras, longitud_palabra):
     """
     Autores: Alejandro Schamun, Abril Katherine Chavaño, Facundo Sanso
+    
+    Llama a la funcion elegir_palabra
     """
     palabra_adivinar = generacion_palabras.elegir_palabra(lista_palabras, longitud_palabra)
 
@@ -73,6 +78,8 @@ def seleccion_palabra(lista_palabras, longitud_palabra):
 def quiere_letras():
     """
     Autores: Alejandro Schamun, Abril Katherine Chavaño, Facundo Sanso
+    
+    Pregunta al usuario si desea un numero especifico de letras
     """
     desea_letras = input(const.DESEA_LETRAS)
     while desea_letras.lower() not in (const.NEGACION, const.AFIRMACION):
@@ -84,6 +91,8 @@ def quiere_letras():
 def asignar_palabras_jugadores(nombres_jugadores, lista_palabras):
     """
     Autores: Alejandro Schamun, Abril Katherine Chavaño, Facundo Sanso
+    
+    Asiga a cada jugador una palabra distinta para jugar
     """
     palabras_asignadas = {}
 
@@ -105,6 +114,8 @@ def asignar_palabras_jugadores(nombres_jugadores, lista_palabras):
 def actualizar_estadisticas_acumuladas(dicc_estadisticas_acumuladas, dicc_estadisticas_partida):
     """
     Autores: Alejandro Schamun, Abril Katherine Chavaño, Facundo Sanso
+    
+    Actualiza las estadisticas de los jugadores al pasar las partidas 
     """
     
     for jugador in dicc_estadisticas_partida:
@@ -156,6 +167,10 @@ def mostrar_resultados_acumulados(dicc_estadisticas_acumuladas, cant_partidas):
 def jugar_una_partida(nombres_jugadores, nombre_ultimo_ganador, lista_palabras):
     """
     Autores: Alejandro Schamun, Abril Katherine Chavaño, Facundo Sanso
+    
+    Se encarga de correr la partida llamando a todas las funciones necesarias para poder jugar
+    y teniendo encuenta las estaditcas de cada uno de los jugadores y su evolucion en el juego.
+    
     """
     
     nombres_jugadores = ahorcado.asignar_turno_jugadores(nombres_jugadores, nombre_ultimo_ganador)
@@ -212,6 +227,10 @@ def jugar_una_partida(nombres_jugadores, nombre_ultimo_ganador, lista_palabras):
 def jugar_multiples_partidas():
     """
     Autores: Alejandro Schamun, Abril Katherine Chavaño, Facundo Sanso
+    
+    Esta función aparece al finalizar una partida. Le da una opción al usuario de seguir jugando. En caso de
+    decir que no, devuelve el puntaje final y un mensaje de despedida.
+    En caso de que la respuesta sea positiva, el programa inicializará una partida nueva.
     """
     
     archivo_palabras = open('palabras.csv', 'r')
