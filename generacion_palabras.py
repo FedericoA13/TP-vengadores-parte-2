@@ -5,6 +5,8 @@ import constantes as const
 def leer_info(archivo, separacion=' '):
     """
     Autores: Joaquin Mendaña, Martin Morono, Federico Aldrighetti
+
+    Abre los archivos, lee las líneas y elimina los guiones, reemplazándolos por espacios en blanco.
     """
     linea = archivo.readline()
     if linea:
@@ -17,6 +19,8 @@ def leer_info(archivo, separacion=' '):
 def quitar_tildes(palabra):
     """
     Autores: Joaquin Mendaña, Martin Morono, Federico Aldrighetti
+
+    En caso de que una palabra tenga tilde, se le quita.
     """
 
     cambios = (("á", "a"), ("é", "e"), ("í", "i"), ("ó", "o"), ("ú", "u"))
@@ -29,6 +33,8 @@ def quitar_tildes(palabra):
 def limpiar_palabra(palabra):
     """
     Autores: Joaquin Mendaña, Martin Morono, Federico Aldrighetti
+
+    Toma las palabras con mayúsculas y las pasa a minúsculas, y quita las tildes a estas también cuando sea necesario.
     """
 
     palabra_limpia = "".join(caracter.lower() if caracter.isalpha()
@@ -41,6 +47,9 @@ def limpiar_palabra(palabra):
 def creacion_de_dicc(lista_archivos):
     """
     Autores: Joaquin Mendaña, Martin Morono, Federico Aldrighetti
+
+    Crea un diccionario que contendrá las palabras que componen los textos y la cantidad de veces que cada una 
+    aparece en cada uno.
     """
     diccionario = {}
     num_archivo = 0
@@ -69,6 +78,8 @@ def creacion_de_dicc(lista_archivos):
 def ordenar_dicc(dicc):
     """
     Autores: Joaquin Mendaña, Martin Morono, Federico Aldrighetti
+
+    Ordena las palabras del diccionario creado por orden alfabético.
     """
 
     return dict(sorted(dicc.items(), key=lambda i: i[0]))
@@ -77,6 +88,9 @@ def ordenar_dicc(dicc):
 def creacion_texto(dicc):
     """
     Autores: Joaquin Mendaña, Martin Morono, Federico Aldrighetti
+
+    Crea el archivo palabras.csv en modo escritura, y le agrega las palabras del diccionario anterior, con la
+    cantidad de veces que aparecen en cada texto.
     """
     archivo_palabras = open('palabras.csv', 'w')
     for palabra, apariciones in dicc.items():
@@ -89,6 +103,9 @@ def creacion_texto(dicc):
 def generar_palabras_candidatas(archivo):
     """
     Autores: Joaquin Mendaña, Martin Morono, Federico Aldrighetti
+
+    Crea una lista con las palabras que cumplan con la longitud permitida según las constantes, y estas estarán
+    disponibles para el juego.
     """
 
     lista_palabras_candidatas = []
@@ -106,6 +123,8 @@ def generar_palabras_candidatas(archivo):
 def elegir_palabra(lista_palabras, cant_letras):
     """
     Autores: Joaquin Mendaña, Martin Morono, Federico Aldrighetti
+
+    Toma la longitud pedida por el usuario y le da una palabra al azar con esa cantidad de letras.
     """
 
     lista_palabras = list(filter(lambda palabra: len(palabra) == cant_letras, lista_palabras))

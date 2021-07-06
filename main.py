@@ -9,6 +9,9 @@ import random
 def recargar_csv():
     """
     Autores: Joaquin Mendaña, Martin Morono, Federico Aldrighetti
+
+    Abree los archivos de texto y toma el diccionario ya ordenado con las palabras de allí, para luego cerrar los 
+    archivos.
     """
     archivo_cuentos = open('Cuentos.txt', 'r')
     archivo_noches = open('Las 1000 Noches y 1 Noche.txt', 'r')
@@ -27,6 +30,9 @@ def recargar_csv():
 def preguntar_recarga_csv():
     """
     Autores: Joaquin Mendaña, Martin Morono, Federico Aldrighetti
+
+    Si palabras.csv aún no existe, lo crea. Si ya existe, se le pregunta al usuario si desea recargarlo para
+    iniciar una partida nueva.
     """
     if not os.path.exists("palabras.csv"):
         recargar_csv()
@@ -92,7 +98,7 @@ def asignar_palabras_jugadores(nombres_jugadores, lista_palabras):
     """
     Autores: Alejandro Schamun, Abril Katherine Chavaño, Facundo Sanso
     
-    Asiga a cada jugador una palabra distinta para jugar
+    Asigna a cada jugador una palabra distinta para jugar
     """
     palabras_asignadas = {}
 
